@@ -333,7 +333,7 @@ renderShared();
 
 /* ---------- 页脚 ---------- */
 document.getElementById('foot').innerHTML =
-  `数据基准 ${S.generated} · 基于 421 个已安装插件包的真实文件系统扫描，非清单声明<br>` +
+  `数据基准 ${S.generated} · 基于 ${S.installed} 个已安装插件包的真实文件系统扫描，非清单声明<br>` +
   `仓库：<a href="https://github.com/Augusta-waveryu/workbuddy-expert-ecosystem" target="_blank">github.com/Augusta-waveryu/workbuddy-expert-ecosystem</a> · 配套公众号长文见仓库 README<br>` +
   `本页所有计算均在浏览器本地完成，不上传任何数据`;
 
@@ -350,7 +350,7 @@ fileInput.addEventListener('change', async () => {
   runCheck();
 });
 document.getElementById('loadDemo').addEventListener('click', () => {
-  selfText.value = E.experts.filter(e=>e.installed).map(e=>e.plugin).join('\n');
+  selfText.value = E.experts.filter(e=>e.installed).map(e=>e.dirName || e.plugin).join('\n');
   runCheck();
 });
 document.getElementById('clearSelf').addEventListener('click', () => { selfText.value=''; selfResult.innerHTML=''; selfNotice.style.display='none'; });
@@ -377,9 +377,9 @@ function runCheck(){
   const installed = parseInstalledNames(text);
   if(!installed.size){ selfResult.innerHTML = '<div class="empty">未能从输入中解析出任何插件名</div>'; return; }
 
-  const market = E.experts.filter(e => !E.remoteOnly.some(r=>r.id===e.id)); // 421 可装
-  const mine = market.filter(e => installed.has(e.plugin.toLowerCase()));
-  const missing = market.filter(e => !installed.has(e.plugin.toLowerCase()));
+  const market = E.experts.filter(e => e.market); // 421 市场可公开安装
+  const mine = market.filter(e => installed.has((e.dirName || e.plugin).toLowerCase()));
+  const missing = market.filter(e => !installed.has((e.dirName || e.plugin).toLowerCase()));
   const pct = Math.round(mine.length / market.length * 100);
 
   // 分类缺口
@@ -403,7 +403,7 @@ function runCheck(){
     <div class="bar"><i style="width:${pct}%"></i></div>
     <div class="cats" style="margin-top:16px">${gapHtml || '<div class="empty">全部装齐，你是满级玩家 🎉</div>'}</div>`;
   selfNotice.style.display = 'block';
-  selfNotice.textContent = '提示：覆盖率按「市场可公开安装的 421 位」计算；另有 19 位内部专家（如 AICoding 架构专家团、乐享、小T 等）无公开包，只能经 GUI 召唤。';
+  selfNotice.textContent = '提示：覆盖率按「市场可公开安装的 421 位」计算；另有 19 位内部专家（如 AICoding 架构专家团、乐享、小T 等）无公开包，只能经 GUI 召唤。你当前已召唤其中 ' + E.experts.filter(e=>!e.market && e.installed).length + ' 位。';
 }
 </script>
 </body>
