@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorkBuddy 专家技能生态 · 自查手册</title>
+<meta name="description" content="440 位专家、609 个私有技能、108 个连接器的完整拆解；上传本机 marketplace.json 即可自查安装覆盖率。">
+<style>
+:root{
+  --ink:#1f2329; --muted:#64748b; --line:#e2e8f0; --bg:#f5f7fa;
+  --panel:#fff; --accent:#2563eb; --accent-soft:#eff4ff; --ok:#16a34a; --warn:#d97706;
+  --code-bg:#0f172a;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.7;font-size:15px}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+/* Hero */
+.hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);color:#e2e8f0;padding:56px 0 44px;margin-bottom:36px}
+.hero-inner{max-width:1060px;margin:0 auto;padding:0 20px}
+.hero h1{margin:0 0 10px;font-size:30px;color:#fff;letter-spacing:.01em}
+.hero .sub{font-size:15px;color:#94a3b8;max-width:760px}
+.hero .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.hero .badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:999px;
+  padding:7px 15px;font-size:13px;color:#cbd5e1}
+.hero .badge b{color:#fff;font-size:15px}
+/* 卡片 */
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:0 0 32px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.card .num{font-size:26px;font-weight:700;color:var(--accent)}
+.card .lbl{font-size:12.5px;color:var(--muted);margin-top:2px}
+/* 自查区 */
+.selfcheck{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:36px}
+.selfcheck h2{margin:0 0 6px;font-size:20px}
+.selfcheck .hint{color:var(--muted);font-size:13px;margin:0 0 16px}
+.selfcheck .path{background:#f1f5f9;border-radius:6px;padding:4px 9px;font-family:Menlo,monospace;font-size:12.5px;color:#be123c}
+.btn{border:none;border-radius:9px;padding:9px 18px;font-size:14px;cursor:pointer;font-weight:600}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.selbtns{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+textarea{padding:10px;border:1px solid var(--line);border-radius:9px;font-family:Menlo,monospace;font-size:12.5px;width:100%;min-height:90px;resize:vertical}
+textarea:focus,.filter input:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+#selfResult{margin-top:16px}
+/* 结果区 */
+.rstat{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.rstat .cell{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.rstat .cell .v{font-size:22px;font-weight:700}
+.rstat .cell .k{font-size:12px;color:var(--muted)}
+.rstat .ok .v{color:var(--ok)} .rstat .bad .v{color:var(--warn)}
+.bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px}
+/* 分类 */
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-bottom:36px}
+.cat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.cat .t{display:flex;justify-content:space-between;align-items:baseline;font-weight:600}
+.cat .t small{color:var(--muted);font-weight:400;font-size:12px}
+.cat .desc{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.5}
+/* 通用表格 */
+.tablewrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:36px}
+.tablehead{padding:18px 20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.tablehead h2{margin:0;font-size:20px}
+.tablehead .tip{color:var(--muted);font-size:12.5px}
+.filter{display:flex;gap:8px;margin:10px 20px 0;flex-wrap:wrap}
+.filter input{flex:1;min-width:200px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px}
+.filter select{padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fff}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+.tbl th{position:sticky;top:0;background:#f8fafc;color:#0f172a;text-align:left;padding:9px 12px;font-weight:600;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+.tbl td{padding:8px 12px;border-bottom:1px solid #eef2f7;vertical-align:top}
+.tbl tr:hover{background:#fafcff}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:1px 7px;font-size:11.5px;margin:1px 2px 1px 0;white-space:nowrap}
+.tag.team{background:#fef3c7;color:#92400e}
+.tag.miss{background:#fef2f2;color:#b91c1c}
+.tag.ok{background:#f0fdf4;color:#15803d}
+.tag.tencent{background:#ede9fe;color:#5b21b6}
+.pill{display:inline-block;background:#f1f5f9;color:#475569;border-radius:6px;padding:0 7px;font-size:11.5px;margin:1px 3px 1px 0}
+code,pre{font-family:"SF Mono",Menlo,Consolas,monospace}
+/* 排行 */
+.rankbar{display:flex;align-items:center;gap:10px;margin:6px 0}
+.rankbar .n{width:26px;text-align:right;color:var(--muted);font-size:12.5px}
+.rankbar .ln{flex:0 0 210px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rankbar .track{flex:1;height:16px;background:#f1f5f9;border-radius:8px;overflow:hidden}
+.rankbar .track>i{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#3b82f6);border-radius:8px}
+.rankbar .c{flex:0 0 34px;font-size:12.5px;color:var(--muted)}
+/* 安装机制 */
+.mech{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:36px}
+.mech h2{margin:0 0 14px;font-size:20px}
+.mech ol{margin:0 0 16px;padding-left:22px}
+.mech li{margin:6px 0}
+.mech code{background:#f1f5f9;padding:1px 6px;border-radius:5px;font-size:12.5px;color:#be123c}
+pre.block{background:var(--code-bg);color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:12.5px;line-height:1.6}
+pre.block code{background:none;color:inherit;padding:0}
+.channel{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:14px 0}
+.channel .cc{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fafbfc}
+.channel .cc .t{font-weight:600;margin-bottom:6px}
+.channel .cc ul{margin:0;padding-left:18px;font-size:13px;color:#334155}
+.channel .cc li{margin:3px 0}
+.foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:40px;line-height:2}
+.foot a{color:var(--accent)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h2 .en{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.empty{color:var(--muted);text-align:center;padding:26px;font-size:13.5px}
+.mb16{margin-bottom:16px}
+.notice{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:10px 14px;font-size:13px;margin-top:12px}
+@media(max-width:700px){
+  .hero h1{font-size:23px}
+  .rankbar .ln{flex-basis:130px}
+  .tablehead,.filter{flex-direction:column;align-items:stretch}
+}
+</style>
+</head>
+<body>
+<script src="data.js"></script>
+<div class="hero">
+  <div class="hero-inner">
+    <h1>WorkBuddy 专家技能生态 · 自查手册</h1>
+    <p class="sub">把专家市场「打开看看」——440 位专家、609 个私有技能、108 个连接器的真实构成拆解。
+      上传你本机的 <code>marketplace.json</code>，立即算清你的安装覆盖率。</p>
+    <div class="badges" id="heroBadges"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="grid" id="statCards"></div>
+
+  <!-- ================= 自查 ================= -->
+  <div class="selfcheck" id="check">
+    <h2>🧭 自查：你装了多少专家？</h2>
+    <p class="hint">方法一：选择本机文件 <code class="path">~/.workbuddy/plugins/marketplaces/experts/.codebuddy-plugin/marketplace.json</code>；
+    方法二：粘贴 JSON 内容；方法三：直接粘贴插件名（每行一个，可含 <code>@experts</code> 后缀）。数据仅在浏览器本地解析，不会上传。</p>
+    <div class="selbtns">
+      <button class="btn btn-primary" id="pickFile">📄 选择 marketplace.json</button>
+      <button class="btn btn-ghost" id="loadDemo">🖥 加载「已全部安装」示例</button>
+      <button class="btn btn-ghost" id="clearSelf">清空</button>
+    </div>
+    <input type="file" id="fileInput" accept=".json,application/json" hidden>
+    <textarea id="selfText" placeholder="或在此粘贴 JSON / 插件名列表…"></textarea>
+    <div class="selbtns"><button class="btn btn-primary" id="runCheck">▶ 开始自查</button></div>
+    <div id="selfResult"></div>
+    <div class="notice" id="selfNotice" style="display:none"></div>
+  </div>
+
+  <!-- ================= 分类分布 ================= -->
+  <div class="mb16"><h2 style="font-size:20px">分类分布</h2></div>
+  <div class="cats" id="catGrid"></div>
+
+  <!-- ================= 专家全表 ================= -->
+  <div class="tablewrap" id="experts">
+    <div class="tablehead">
+      <h2>专家全表 <span class="en">440 位 · 支持搜索 / 筛选 / 排序</span></h2>
+    </div>
+    <div class="filter">
+      <input id="expSearch" placeholder="搜索名称 / 职业 / 描述 / 插件名…">
+      <select id="expCat"><option value="">全部分类</option></select>
+      <select id="expType">
+        <option value="">全部类型</option><option value="agent">单体 agent</option><option value="team">专家团 team</option>
+      </select>
+      <select id="expInst">
+        <option value="">安装状态</option><option value="inst">已安装</option><option value="miss">未安装</option>
+      </select>
+    </div>
+    <div style="max-height:640px;overflow:auto">
+      <table class="tbl">
+        <thead><tr>
+          <th data-k="name">名称</th><th data-k="category">分类</th><th data-k="type">类型</th>
+          <th data-k="agents">agents</th><th data-k="skills">技能数</th><th data-k="sizeMB">体积</th><th>状态</th>
+        </tr></thead>
+        <tbody id="expBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= 技能排行榜 ================= -->
+  <div class="tablewrap" id="rank">
+    <div class="tablehead">
+      <h2>技能引用排行榜 <span class="en">609 个唯一技能 · 按被引用专家数排序</span></h2>
+      <div class="tip">「被引用」= 该 skill 被多少个专家包携带（曝光广度）</div>
+    </div>
+    <div class="filter"><input id="rankSearch" placeholder="搜索技能名…"></div>
+    <div style="padding:14px 20px 20px"><div id="rankTop"></div></div>
+  </div>
+
+  <!-- ================= 共享技能 ================= -->
+  <div class="tablewrap" id="shared">
+    <div class="tablehead">
+      <h2>共享技能明细 <span class="en">78 个被 ≥2 专家复用的技能</span></h2>
+    </div>
+    <div class="filter"><input id="sharedSearch" placeholder="搜索技能名…"></div>
+    <div style="max-height:520px;overflow:auto">
+      <table class="tbl">
+        <thead><tr><th>技能</th><th>复用专家数</th><th>复用它的专家</th></tr></thead>
+        <tbody id="sharedBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= 安装机制 ================= -->
+  <div class="mech" id="mech">
+    <h2>安装机制逆向「点击召唤到底做了什么」</h2>
+    <ol>
+      <li><b>召唤 = 真安装。</b>点击专家「召唤」会触发 <code>ensureDownloaded()</code> → 下载 tar.gz → 解压到 <code>plugins/marketplaces/experts/plugins/&lt;name&gt;/</code> → 增量回写 <code>marketplace.json</code> 并留 <code>.downloaded_at</code> 时间戳。</li>
+      <li><b>公开回退源（本拆解的核心突破）。</b>客户端逻辑里存在 <code>explicitBundleUrl || 默认COS地址</code> 双源降级；而默认地址指向一个<b>无签名、可枚举</b>的腾讯云 COS 桶，于是可以绕过 GUI 一键全量安装。</li>
+      <li><b>三类包</b>：市场公开专家（COS 直下）、内置专家（随 app 分发）、19 位内部专家（走运营平台预签名 URL，本地无公开包，只能 GUI 召唤）。</li>
+    </ol>
+    <div class="channel">
+      <div class="cc"><div class="t">① GUI 召唤</div><ul><li>人工逐一点击，单个安装</li><li>完整权限链路</li></ul></div>
+      <div class="cc"><div class="t">② CLI 安装</div><ul><li><code>codebuddy plugin install &lt;name&gt;@experts</code></li><li>只认本机 marketplace.json 已有条目</li><li>清单缺条目时反而装不了（被误判为网络问题）</li></ul></div>
+      <div class="cc"><div class="t">③ 批量脚本（本次采用）</div><ul><li>读远端 <code>expert_center.json</code> 拿 421 个 bundle 名</li><li>并发 10 路下载 COS tar.gz → 解压 → 校验 → 原子落盘</li><li>48 秒装完全部 421 个，0 失败</li></ul></div>
+    </div>
+    <p style="margin:6px 0 8px;font-weight:600">可复现命令：</p>
+<pre class="block"><code># 1. 拉取公开清单（421 专家 / 15 分类 / lastUpdated 2026-08-18）
+curl -o /tmp/expert_center.json \
+  https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/expert-marketplace/expert_center.json
+
+# 2. 单包下载示例：bundle 名 = 专家清单里的 plugin 字段
+curl -o /tmp/content-creator.tar.gz \
+  https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/expert-marketplace/bundles/content-creator.tar.gz</code></pre>
+    <p style="color:var(--muted);font-size:12.5px">完整逆向过程见仓库《拆解报告/06-安装机制逆向.md》。</p>
+  </div>
+
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+const E = window.ECOSYSTEM;
+const S = E.stats;
+
+/* ---------- Hero 徽章 ---------- */
+document.getElementById('heroBadges').innerHTML = [
+  ['专家总数', S.total], ['已安装', S.installed], ['唯一技能', S.skillUnique],
+  ['共享技能', S.sharedSkills], ['全局技能', S.globalSkills], ['连接器', S.connectors]
+].map(([k, v]) => `<span class="badge">${k} <b>${v}</b></span>`).join('');
+
+/* ---------- 统计卡片 ---------- */
+document.getElementById('statCards').innerHTML = [
+  ['440', '专家总数（含 19 位内部专家）'], [S.installed, '已安装到本地'],
+  [S.skillUnique, '专家私有唯一技能'], [S.skillDirs, '私有 skill 目录数'],
+  [S.sharedSkills, '跨专家复用技能'], [S.globalSkills, '全局 skill 池'],
+  [S.connectors, '连接器'], [(S.sizeMB/1024).toFixed(2)+' GB', '插件包总体积']
+].map(([v, k]) => `<div class="card"><div class="num">${v}</div><div class="lbl">${k}</div></div>`).join('');
+
+/* ---------- 分类 ---------- */
+const catStat = {};
+E.experts.forEach(e => { catStat[e.category] = catStat[e.category] || {t:0, i:0}; catStat[e.category].t++; if(e.installed) catStat[e.category].i++; });
+document.getElementById('catGrid').innerHTML = E.categories.map(c => {
+  const st = catStat[c.id] || {t:0, i:0};
+  const pct = st.t ? Math.round(st.i/st.t*100) : 0;
+  return `<div class="cat">
+    <div class="t">${c.name} <small>${st.i}/${st.t} 已装 · ${pct}%</small></div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="desc">${c.desc}</div>
+  </div>`;
+}).join('');
+
+/* ---------- 专家全表 ---------- */
+const catSel = document.getElementById('expCat');
+E.categories.forEach(c => catSel.add(new Option(c.name, c.id)));
+const expBody = document.getElementById('expBody');
+let expSort = {k:'name', asc:true};
+function catName(id){ const c = E.categories.find(x=>x.id===id); return c ? c.name : id; }
+function renderExperts(){
+  const q = document.getElementById('expSearch').value.trim().toLowerCase();
+  const c = catSel.value, t = document.getElementById('expType').value, it = document.getElementById('expInst').value;
+  let rows = E.experts.filter(e => {
+    if(c && e.category !== c) return false;
+    if(t && e.type !== t) return false;
+    if(it === 'inst' && !e.installed) return false;
+    if(it === 'miss' && e.installed) return false;
+    if(q){ const hay = (e.name+' '+e.profession+' '+e.desc+' '+e.plugin+' '+e.id).toLowerCase(); if(!hay.includes(q)) return false; }
+    return true;
+  });
+  rows.sort((a,b) => {
+    let x = a[expSort.k], y = b[expSort.k];
+    if(typeof x === 'string'){ x = x.toLowerCase(); y = y.toLowerCase(); }
+    if(x < y) return expSort.asc ? -1 : 1;
+    if(x > y) return expSort.asc ? 1 : -1;
+    return 0;
+  });
+  expBody.innerHTML = rows.map(e => {
+    const name = e.installed ? `<b>${e.name}</b>` : `${e.name} <span class="tag miss">未装</span>`;
+    const typeTag = e.type === 'team' ? '<span class="tag team">团队</span>' : '<span class="tag">单体</span>';
+    const skills = e.skills.slice(0,4).map(s => `<span class="pill">${s}</span>`).join('') + (e.skills.length>4?`<span class="pill">+${e.skills.length-4}</span>`:'');
+    return `<tr>
+      <td>${name}<br><span style="color:var(--muted);font-size:11.5px">${e.profession}</span></td>
+      <td style="font-size:12px">${catName(e.category)}</td>
+      <td>${typeTag}</td>
+      <td>${e.agents.length}</td>
+      <td>${e.skills.length}</td>
+      <td>${e.sizeMB? e.sizeMB.toFixed(1)+'M' : '—'}</td>
+      <td style="font-size:12px">${e.skills.length>0? `<span class="tag ok">${e.skills.length} skill</span>`:''}${e.rules?`<span class="tag">${e.rules} rule</span>`:''}${e.scripts?`<span class="tag">${e.scripts} script</span>`:''}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="7" class="empty">没有匹配的专家</td></tr>';
+}
+document.querySelectorAll('#experts .tbl th').forEach(th => th.addEventListener('click', () => {
+  const k = th.dataset.k; if(!k) return;
+  if(expSort.k === k) expSort.asc = !expSort.asc; else expSort = {k, asc:true};
+  renderExperts();
+}));
+document.getElementById('expSearch').addEventListener('input', renderExperts);
+catSel.addEventListener('change', renderExperts);
+document.getElementById('expType').addEventListener('change', renderExperts);
+document.getElementById('expInst').addEventListener('change', renderExperts);
+renderExperts();
+
+/* ---------- 技能排行榜 ---------- */
+const maxCnt = E.skillRank[0].count;
+function renderRank(){
+  const q = document.getElementById('rankSearch').value.trim().toLowerCase();
+  const rows = E.skillRank.filter(s => !q || s.name.toLowerCase().includes(q)).slice(0, 40);
+  document.getElementById('rankTop').innerHTML = rows.length ? rows.map((s, i) => {
+    const w = Math.max(3, s.count/maxCnt*100);
+    return `<div class="rankbar"><span class="n">${i+1}</span><span class="ln">${s.name}</span>
+      <span class="track"><i style="width:${w}%"></i></span><span class="c">${s.count}</span></div>`;
+  }).join('') : '<div class="empty">没有匹配的技能</div>';
+}
+document.getElementById('rankSearch').addEventListener('input', renderRank);
+renderRank();
+
+/* ---------- 共享技能 ---------- */
+function renderShared(){
+  const q = document.getElementById('sharedSearch').value.trim().toLowerCase();
+  const rows = E.sharedSkills.filter(s => !q || s.name.toLowerCase().includes(q));
+  document.getElementById('sharedBody').innerHTML = rows.map(s =>
+    `<tr><td><code>${s.name}</code></td><td><b>${s.count}</b></td>
+     <td style="font-size:12px">${s.experts.slice(0,10).join('、')}${s.experts.length>10?` 等 ${s.experts.length} 位`:''}</td></tr>`
+  ).join('') || '<tr><td colspan="3" class="empty">没有匹配的技能</td></tr>';
+}
+document.getElementById('sharedSearch').addEventListener('input', renderShared);
+renderShared();
+
+/* ---------- 页脚 ---------- */
+document.getElementById('foot').innerHTML =
+  `数据基准 ${S.generated} · 基于 421 个已安装插件包的真实文件系统扫描，非清单声明<br>` +
+  `仓库：<a href="https://github.com/Augusta-waveryu/workbuddy-expert-ecosystem" target="_blank">github.com/Augusta-waveryu/workbuddy-expert-ecosystem</a> · 配套公众号长文见仓库 README<br>` +
+  `本页所有计算均在浏览器本地完成，不上传任何数据`;
+
+/* ================= 自查 ================= */
+const fileInput = document.getElementById('fileInput');
+const selfText = document.getElementById('selfText');
+const selfResult = document.getElementById('selfResult');
+const selfNotice = document.getElementById('selfNotice');
+
+document.getElementById('pickFile').addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', async () => {
+  const f = fileInput.files[0]; if(!f) return;
+  selfText.value = await f.text();
+  runCheck();
+});
+document.getElementById('loadDemo').addEventListener('click', () => {
+  selfText.value = E.experts.filter(e=>e.installed).map(e=>e.plugin).join('\n');
+  runCheck();
+});
+document.getElementById('clearSelf').addEventListener('click', () => { selfText.value=''; selfResult.innerHTML=''; selfNotice.style.display='none'; });
+document.getElementById('runCheck').addEventListener('click', runCheck);
+
+function parseInstalledNames(text){
+  const names = new Set();
+  text.split('\n').forEach(line => {
+    line = line.trim().replace(/^["'`]+|["'`]+$/g, '');
+    if(!line) return;
+    try {
+      const j = JSON.parse(line);
+      if(Array.isArray(j.plugins)) j.plugins.forEach(p => { if(p && p.name) names.add(p.name.replace(/@experts$/,'').toLowerCase()); });
+      else if(j.name && (j.agents || j.skills || j.promptFile || j.plugin)) names.add((j.name || j.plugin || '').replace(/@experts$/,'').toLowerCase());
+    } catch(e) {
+      names.add(line.replace(/@experts$/,'').toLowerCase());
+    }
+  });
+  return names;
+}
+function runCheck(){
+  const text = selfText.value.trim();
+  if(!text){ selfResult.innerHTML = '<div class="empty">请先选择文件或粘贴内容</div>'; return; }
+  const installed = parseInstalledNames(text);
+  if(!installed.size){ selfResult.innerHTML = '<div class="empty">未能从输入中解析出任何插件名</div>'; return; }
+
+  const market = E.experts.filter(e => !E.remoteOnly.some(r=>r.id===e.id)); // 421 可装
+  const mine = market.filter(e => installed.has(e.plugin.toLowerCase()));
+  const missing = market.filter(e => !installed.has(e.plugin.toLowerCase()));
+  const pct = Math.round(mine.length / market.length * 100);
+
+  // 分类缺口
+  const catGap = {};
+  missing.forEach(e => { catGap[e.category] = catGap[e.category] || []; catGap[e.category].push(e); });
+  const gapHtml = Object.entries(catGap).map(([cid, list]) =>
+    `<div class="cat"><div class="t">${catName(cid)} <small>缺 ${list.length}</small></div>
+     <div class="desc">${list.slice(0,6).map(e=>e.name).join('、')}${list.length>6?` 等 ${list.length} 位`:''}</div></div>`
+  ).join('');
+
+  const mySkills = mine.reduce((a,e)=>a+e.skills.length,0);
+
+  selfResult.innerHTML = `
+    <div class="rstat">
+      <div class="cell ok"><div class="v">${mine.length}</div><div class="k">已装市场专家（可装 ${market.length}）</div></div>
+      <div class="cell"><div class="v">${pct}%</div><div class="k">覆盖率</div></div>
+      <div class="cell"><div class="v">${missing.length}</div><div class="k">未装（${Object.keys(catGap).length} 个分类）</div></div>
+      <div class="cell"><div class="v">${mySkills}</div><div class="k">你已持有的技能包数</div></div>
+      <div class="cell"><div class="v">${installed.size}</div><div class="k">输入里解析出的插件名</div></div>
+    </div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="cats" style="margin-top:16px">${gapHtml || '<div class="empty">全部装齐，你是满级玩家 🎉</div>'}</div>`;
+  selfNotice.style.display = 'block';
+  selfNotice.textContent = '提示：覆盖率按「市场可公开安装的 421 位」计算；另有 19 位内部专家（如 AICoding 架构专家团、乐享、小T 等）无公开包，只能经 GUI 召唤。';
+}
+</script>
+</body>
+</html>
