@@ -117,7 +117,7 @@ h2 .en{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
   <div class="hero-inner">
     <h1>WorkBuddy 专家技能生态 · 自查手册</h1>
     <p class="sub">把专家市场「打开看看」——440 位专家、609 个私有技能、108 个连接器的真实构成拆解。
-      上传你本机的 <code>marketplace.json</code>，立即算清你的安装覆盖率。</p>
+      上传你本机的 <code>marketplace.json</code>，立即算清你的安装覆盖率；19 位内部专家中哪些外部能召唤，也一清二楚。</p>
     <div class="badges" id="heroBadges"></div>
   </div>
 </div>
@@ -200,12 +200,12 @@ h2 .en{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
   <!-- ================= 内部专家可见性 ================= -->
   <div class="tablewrap" id="internal">
     <div class="tablehead">
-      <h2>腾讯内部专家可见性 <span class="en">19 位无公开安装包 · 仅部分可经 GUI 召唤</span></h2>
+      <h2>腾讯内部专家可见性 <span class="en">19 位无公开安装包 · 外部仅 4 位可召唤</span></h2>
       <div class="tip">visibility 字段：<code>internal_only</code> 外部不可见、<code>external_only</code> 外部可召唤、<code>all/默认</code> 全可见</div>
     </div>
     <div style="max-height:520px;overflow:auto">
       <table class="tbl">
-        <thead><tr><th>名称</th><th>分类</th><th>可见性</th><th>状态</th></tr></thead>
+        <thead><tr><th>名称</th><th>分类</th><th>可见性</th><th>OPC</th><th>状态</th></tr></thead>
         <tbody id="internalBody"></tbody>
       </table>
     </div>
@@ -217,7 +217,7 @@ h2 .en{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
     <ol>
       <li><b>召唤 = 真安装。</b>点击专家「召唤」会触发 <code>ensureDownloaded()</code> → 下载 tar.gz → 解压到 <code>plugins/marketplaces/experts/plugins/&lt;name&gt;/</code> → 增量回写 <code>marketplace.json</code> 并留 <code>.downloaded_at</code> 时间戳。</li>
       <li><b>公开回退源（本拆解的核心突破）。</b>客户端逻辑里存在 <code>explicitBundleUrl || 默认COS地址</code> 双源降级；而默认地址指向一个<b>无签名、可枚举</b>的腾讯云 COS 桶，于是可以绕过 GUI 一键全量安装。</li>
-      <li><b>三类包</b>：市场公开专家（COS 直下）、内置专家（随 app 分发）、19 位内部专家（走运营平台预签名 URL，本地无公开包，只能 GUI 召唤）。</li>
+      <li><b>三类包</b>：市场公开专家（COS 直下）、内置专家（随 app 分发）、19 位内部专家（无公开包，其中 15 位 `internal_only`/服务端限制，外部 GUI 不可见；仅 AICoding/庄老师/送报报/MigraQ 4 位外部可召唤）。</li>
     </ol>
     <div class="channel">
       <div class="cc"><div class="t">① GUI 召唤</div><ul><li>人工逐一点击，单个安装</li><li>完整权限链路</li></ul></div>
@@ -358,6 +358,7 @@ function visTag(v){
     `<tr><td><b>${e.name}</b><br><span style="color:var(--muted);font-size:11.5px">${e.profession}</span></td>
      <td style="font-size:12px">${catName(e.category)}</td>
      <td>${visTag(e.visibility)}</td>
+     <td>${e.isOPC ? '<span class="tag tencent">OPC</span>' : '—'}</td>
      <td>${e.installed ? '<span class="tag ok">已安装</span>' : '<span class="tag miss">未装</span>'}</td></tr>`
   ).join('');
 })();
@@ -434,7 +435,7 @@ function runCheck(){
     <div class="bar"><i style="width:${pct}%"></i></div>
     <div class="cats" style="margin-top:16px">${gapHtml || '<div class="empty">全部装齐，你是满级玩家 🎉</div>'}</div>`;
   selfNotice.style.display = 'block';
-  selfNotice.textContent = '提示：覆盖率按「市场可公开安装的 421 位」计算；另有 19 位内部专家（如 AICoding 架构专家团、乐享、小T 等）无公开包，只能经 GUI 召唤。你当前已召唤其中 ' + E.experts.filter(e=>!e.market && e.installed).length + ' 位。';
+  selfNotice.textContent = '提示：覆盖率按「市场可公开安装的 421 位」计算。另有 19 位内部专家无公开包，其中外部账号实际可召唤的只有 4 位（AICoding 架构专家团 / 庄老师 / 送报报 / MigraQ），其余 15 位 internal_only 或受服务端限制，GUI 搜不到是正常的。你当前已召唤其中 ' + E.experts.filter(e=>!e.market && e.installed).length + ' 位。';
 }
 </script>
 </body>
