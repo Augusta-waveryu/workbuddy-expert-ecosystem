@@ -197,6 +197,20 @@ h2 .en{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
     </div>
   </div>
 
+  <!-- ================= 内部专家可见性 ================= -->
+  <div class="tablewrap" id="internal">
+    <div class="tablehead">
+      <h2>腾讯内部专家可见性 <span class="en">19 位无公开安装包 · 仅部分可经 GUI 召唤</span></h2>
+      <div class="tip">visibility 字段：<code>internal_only</code> 外部不可见、<code>external_only</code> 外部可召唤、<code>all/默认</code> 全可见</div>
+    </div>
+    <div style="max-height:520px;overflow:auto">
+      <table class="tbl">
+        <thead><tr><th>名称</th><th>分类</th><th>可见性</th><th>状态</th></tr></thead>
+        <tbody id="internalBody"></tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- ================= 安装机制 ================= -->
   <div class="mech" id="mech">
     <h2>安装机制逆向「点击召唤到底做了什么」</h2>
@@ -330,6 +344,23 @@ function renderShared(){
 }
 document.getElementById('sharedSearch').addEventListener('input', renderShared);
 renderShared();
+
+/* ---------- 内部专家可见性 ---------- */
+function visTag(v){
+  if(v === 'internal_only') return '<span class="tag miss">internal_only · 外部不可见</span>';
+  if(v === 'external_only') return '<span class="tag team">external_only · 外部可召唤</span>';
+  if(v === 'all') return '<span class="tag ok">all · 全可见</span>';
+  return '<span class="tag">默认可见</span>';
+}
+(function(){
+  const rows = E.experts.filter(e => !e.market).sort((a,b)=>a.name.localeCompare(b.name,'zh'));
+  document.getElementById('internalBody').innerHTML = rows.map(e =>
+    `<tr><td><b>${e.name}</b><br><span style="color:var(--muted);font-size:11.5px">${e.profession}</span></td>
+     <td style="font-size:12px">${catName(e.category)}</td>
+     <td>${visTag(e.visibility)}</td>
+     <td>${e.installed ? '<span class="tag ok">已安装</span>' : '<span class="tag miss">未装</span>'}</td></tr>`
+  ).join('');
+})();
 
 /* ---------- 页脚 ---------- */
 document.getElementById('foot').innerHTML =
