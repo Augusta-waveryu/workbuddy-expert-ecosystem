@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="-apple-system,BlinkMacSystemFont,PingFang SC,Microsoft YaHei,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient>
+    <linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <text x="60" y="60" fill="#fff" font-size="32" font-weight="800">技能引用排行 TOP 10</text>
+  <text x="60" y="92" fill="#94a3b8" font-size="16">被引用专家数 · 609 个唯一技能中</text>
+  <text x="1140" y="60" text-anchor="end" fill="#60a5fa" font-size="14">数据基准 2026-08-19</text>
+  <text x="980" y="128" text-anchor="end" fill="#475569" font-size="12">15</text>
+  <rect x="380" y="150" width="600.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="174" text-anchor="end" fill="#94a3b8" font-size="13">1</text>
+<text x="348" y="174" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">minimax-docx</text>
+<text x="990.0" y="174" fill="#fff" font-size="15" font-weight="700">15</text>
+<rect x="380" y="200" width="480.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="224" text-anchor="end" fill="#94a3b8" font-size="13">2</text>
+<text x="348" y="224" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">market-researcher</text>
+<text x="870.0" y="224" fill="#fff" font-size="15" font-weight="700">12</text>
+<rect x="380" y="250" width="480.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="274" text-anchor="end" fill="#94a3b8" font-size="13">3</text>
+<text x="348" y="274" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">neodata-financial-search</text>
+<text x="870.0" y="274" fill="#fff" font-size="15" font-weight="700">12</text>
+<rect x="380" y="300" width="400.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="324" text-anchor="end" fill="#94a3b8" font-size="13">4</text>
+<text x="348" y="324" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">anti-distill</text>
+<text x="790.0" y="324" fill="#fff" font-size="15" font-weight="700">10</text>
+<rect x="380" y="350" width="360.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="374" text-anchor="end" fill="#94a3b8" font-size="13">5</text>
+<text x="348" y="374" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">browser-use</text>
+<text x="750.0" y="374" fill="#fff" font-size="15" font-weight="700">9</text>
+<rect x="380" y="400" width="320.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="424" text-anchor="end" fill="#94a3b8" font-size="13">6</text>
+<text x="348" y="424" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">xlsx-author</text>
+<text x="710.0" y="424" fill="#fff" font-size="15" font-weight="700">8</text>
+<rect x="380" y="450" width="280.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="474" text-anchor="end" fill="#94a3b8" font-size="13">7</text>
+<text x="348" y="474" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">humanizer</text>
+<text x="670.0" y="474" fill="#fff" font-size="15" font-weight="700">7</text>
+<rect x="380" y="500" width="280.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="524" text-anchor="end" fill="#94a3b8" font-size="13">8</text>
+<text x="348" y="524" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">westock</text>
+<text x="670.0" y="524" fill="#fff" font-size="15" font-weight="700">7</text>
+<rect x="380" y="550" width="240.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="574" text-anchor="end" fill="#94a3b8" font-size="13">9</text>
+<text x="348" y="574" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">audit-xls</text>
+<text x="630.0" y="574" fill="#fff" font-size="15" font-weight="700">6</text>
+<rect x="380" y="600" width="240.0" height="38" rx="6" fill="url(#rg)"/>
+<text x="368" y="624" text-anchor="end" fill="#94a3b8" font-size="13">10</text>
+<text x="348" y="624" text-anchor="end" fill="#cbd5e1" font-size="14" font-family="SF Mono,Menlo,monospace">deep-research</text>
+<text x="630.0" y="624" fill="#fff" font-size="15" font-weight="700">6</text>
+  <text x="60" y="660" fill="#64748b" font-size="13">说明：「被引用」= 该 skill 被多少个专家包携带，反映曝光广度，不等于会话级运行次数。</text>
+</svg>

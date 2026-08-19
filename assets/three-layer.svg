@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" font-family="-apple-system,BlinkMacSystemFont,PingFang SC,Microsoft YaHei,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient>
+    <linearGradient id="l1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#60a5fa"/></linearGradient>
+    <linearGradient id="l2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#818cf8"/></linearGradient>
+    <linearGradient id="l3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a855f7"/><stop offset="1" stop-color="#c084fc"/></linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cbd5e1"/></marker>
+  </defs>
+  <rect width="1200" height="640" fill="url(#bg)"/>
+  <text x="60" y="60" fill="#fff" font-size="32" font-weight="800">三层结构：标签 ≠ 能力</text>
+  <text x="60" y="92" fill="#94a3b8" font-size="16">你看到的标签和它真正的行为之间，至少隔着两层</text>
+
+  <g transform="translate(60,150)">
+    <rect width="320" height="440" rx="14" fill="url(#l1)" opacity="0.92"/>
+    <text x="160" y="48" text-anchor="middle" fill="#fff" font-size="18" font-weight="700" letter-spacing="2">L1 · 展示层</text>
+    <text x="160" y="74" text-anchor="middle" fill="#dbeafe" font-size="13">manifest.json · 440 专家</text>
+    <g transform="translate(28,108)" fill="#fff" font-size="14">
+      <text y="0">• id / displayName</text>
+      <text y="28">• profession / description</text>
+      <text y="56">• tags / categoryId</text>
+      <text y="84">• promptFile / avatar</text>
+      <text y="112">• defaultInitPrompt</text>
+      <text y="140">• quickPrompts</text>
+      <text y="168">• visibility / isOPC</text>
+    </g>
+    <text x="28" y="320" fill="#fef3c7" font-size="14" font-weight="600">特征：</text>
+    <text x="28" y="346" fill="#dbeafe" font-size="13">• 只读、纯展示元数据</text>
+    <text x="28" y="368" fill="#dbeafe" font-size="13">• 用户看到的「标签」在这层</text>
+    <text x="28" y="390" fill="#dbeafe" font-size="13">• 不影响实际执行</text>
+  </g>
+
+  <g transform="translate(440,150)">
+    <rect width="320" height="440" rx="14" fill="url(#l2)" opacity="0.92"/>
+    <text x="160" y="48" text-anchor="middle" fill="#fff" font-size="18" font-weight="700" letter-spacing="2">L2 · 插件包</text>
+    <text x="160" y="74" text-anchor="middle" fill="#e0e7ff" font-size="13">bundles/*.tar.gz · 421 可装</text>
+    <g transform="translate(28,108)" fill="#fff" font-size="14">
+      <text y="0">• .codebuddy-plugin/</text>
+      <text y="28" x="0">　└─ plugin.json</text>
+      <text y="56">• agents/&lt;name&gt;.md</text>
+      <text y="84">• skills/&lt;name&gt;/SKILL.md</text>
+      <text y="112">• rules/*.md</text>
+      <text y="140">• scripts/ · mcp/ · hooks/</text>
+      <text y="168">• .downloaded_at</text>
+    </g>
+    <text x="28" y="320" fill="#fef3c7" font-size="14" font-weight="600">下载/解压入口</text>
+    <text x="28" y="346" fill="#e0e7ff" font-size="13">• COS: bundles/&lt;plugin&gt;.tar.gz</text>
+    <text x="28" y="368" fill="#e0e7ff" font-size="13">• 421 公开 / 19 无公开包</text>
+    <text x="28" y="390" fill="#e0e7ff" font-size="13">• 解压到 plugins/&lt;name&gt;/</text>
+  </g>
+
+  <g transform="translate(820,150)">
+    <rect width="320" height="440" rx="14" fill="url(#l3)" opacity="0.92"/>
+    <text x="160" y="48" text-anchor="middle" fill="#fff" font-size="18" font-weight="700" letter-spacing="2">L3 · 实际构件</text>
+    <text x="160" y="74" text-anchor="middle" fill="#f3e8ff" font-size="13">真正决定行为的层级</text>
+    <g transform="translate(28,108)" fill="#fff" font-size="14">
+      <text y="0">• agents/&lt;name&gt;.md（人格）</text>
+      <text y="28">• skills/（私有技能）</text>
+      <text y="56">• rules/（硬性约束）</text>
+      <text y="84">• scripts/（可执行脚本）</text>
+      <text y="112">• mcp/（自带 MCP 服务）</text>
+      <text y="140">• hooks/（生命周期钩子）</text>
+    </g>
+    <text x="28" y="320" fill="#fef3c7" font-size="14" font-weight="600">关键洞察</text>
+    <text x="28" y="346" fill="#f3e8ff" font-size="13">• 标签相同但 prompt 不同</text>
+    <text x="28" y="368" fill="#f3e8ff" font-size="13">　→ 产出天差地别</text>
+    <text x="28" y="390" fill="#f3e8ff" font-size="13">• 同名 skill 复用 ≠ 同能力</text>
+  </g>
+
+  <path d="M380,370 L440,370" stroke="#cbd5e1" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+  <path d="M760,370 L820,370" stroke="#cbd5e1" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+  <text x="410" y="358" fill="#cbd5e1" font-size="14" text-anchor="middle">解析</text>
+  <text x="790" y="358" fill="#cbd5e1" font-size="14" text-anchor="middle">解压</text>
+</svg>

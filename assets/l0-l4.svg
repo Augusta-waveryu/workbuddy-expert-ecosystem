@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="-apple-system,BlinkMacSystemFont,PingFang SC,Microsoft YaHei,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f172a"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <text x="60" y="60" fill="#fff" font-size="32" font-weight="800">L0–L4 差异模型：同标签 ≠ 同能力</text>
+  <text x="60" y="92" fill="#94a3b8" font-size="16">差异发生在四个层次，自下而上影响越来越深</text>
+  <text x="1140" y="60" text-anchor="end" fill="#60a5fa" font-size="14">数据基准 2026-08-19</text>
+  <rect x="60" y="130" width="900" height="80" rx="10" fill="#0b1a3a" stroke="#64748b" stroke-width="2"/>
+<rect x="60" y="130" width="14" height="80" rx="4" fill="#64748b"/>
+<text x="100" y="164" fill="#fff" font-size="20" font-weight="700">L0 · 标签</text>
+<text x="100" y="192" fill="#64748b" font-size="14" font-weight="600">影响：不影响执行</text>
+<text x="980" y="180" text-anchor="end" fill="#cbd5e1" font-size="15">差异：标签字符串完全相同</text>
+<rect x="60" y="224" width="900" height="80" rx="10" fill="#0b1a3a" stroke="#3b82f6" stroke-width="2"/>
+<rect x="60" y="224" width="14" height="80" rx="4" fill="#3b82f6"/>
+<text x="100" y="258" fill="#fff" font-size="20" font-weight="700">L1 · 人格 agent.md</text>
+<text x="100" y="286" fill="#3b82f6" font-size="14" font-weight="600">影响：最主要</text>
+<text x="980" y="274" text-anchor="end" fill="#cbd5e1" font-size="15">差异：同名 skill + 不同的指令链</text>
+<rect x="60" y="318" width="900" height="80" rx="10" fill="#0b1a3a" stroke="#6366f1" stroke-width="2"/>
+<rect x="60" y="318" width="14" height="80" rx="4" fill="#6366f1"/>
+<text x="100" y="352" fill="#fff" font-size="20" font-weight="700">L2 · rules</text>
+<text x="100" y="380" fill="#6366f1" font-size="14" font-weight="600">影响：强约束</text>
+<text x="980" y="368" text-anchor="end" fill="#cbd5e1" font-size="15">差异：输出格式、强制条款</text>
+<rect x="60" y="412" width="900" height="80" rx="10" fill="#0b1a3a" stroke="#a855f7" stroke-width="2"/>
+<rect x="60" y="412" width="14" height="80" rx="4" fill="#a855f7"/>
+<text x="100" y="446" fill="#fff" font-size="20" font-weight="700">L3 · skills/mcp/scripts</text>
+<text x="100" y="474" fill="#a855f7" font-size="14" font-weight="600">影响：能力边界</text>
+<text x="980" y="462" text-anchor="end" fill="#cbd5e1" font-size="15">差异：可调用的工具集</text>
+<rect x="60" y="506" width="900" height="80" rx="10" fill="#0b1a3a" stroke="#ec4899" stroke-width="2"/>
+<rect x="60" y="506" width="14" height="80" rx="4" fill="#ec4899"/>
+<text x="100" y="540" fill="#fff" font-size="20" font-weight="700">L4 · members 团队编排</text>
+<text x="100" y="568" fill="#ec4899" font-size="14" font-weight="600">影响：协作模式</text>
+<text x="980" y="556" text-anchor="end" fill="#cbd5e1" font-size="15">差异：团队型专家的成员分工</text>
+  <text x="1000" y="170" fill="#64748b" font-size="14" font-weight="700">执行差异 ↑</text>
+<text x="1000" y="264" fill="#3b82f6" font-size="14" font-weight="700">执行差异 ↑</text>
+<text x="1000" y="358" fill="#6366f1" font-size="14" font-weight="700">执行差异 ↑</text>
+<text x="1000" y="452" fill="#a855f7" font-size="14" font-weight="700">执行差异 ↑</text>
+<text x="1000" y="546" fill="#ec4899" font-size="14" font-weight="700">执行差异 ↑</text>
+  <text x="60" y="670" fill="#64748b" font-size="13">结论：L1（人格 prompt）是影响差异的第一大因素，相同的 skill 在不同外层 prompt 下会输出截然不同的结果。</text>
+</svg>

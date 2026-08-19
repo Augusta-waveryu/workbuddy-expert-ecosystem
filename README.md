@@ -3,6 +3,8 @@
 > 把 WorkBuddy 专家市场「打开看看」：440 位专家、609 个私有技能、108 个连接器的真实构成拆解。
 > 配套：**[公众号长文](公众号长文.md)** · **[自查网站](https://augusta-waveryu.github.io/workbuddy-expert-ecosystem/)** · **[网页版速查报告](拆解报告/)**
 
+![封面](assets/cover.png)
+
 ---
 
 ## 这是什么
